@@ -1,36 +1,30 @@
-# Helidon MP Bare
+# toolbox project
 
-Minimal Helidon MP project suitable to start from scratch.
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-## Build and run
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-With JDK11+
-```bash
-mvn package
-java -jar target/toolbox.jar
+## Running the application in dev mode
+
+You can run your application in dev mode that enables live coding using:
+```
+./mvnw quarkus:dev
 ```
 
-## Exercise the application
+## Packaging and running the application
 
-```
-curl -X GET http://localhost:8080/greet
-{"message":"Hello World!"}
-```
+The application can be packaged using `./mvnw package`.
+It produces the `toolbox-1.0-SNAPSHOT-runner.jar` file in the `/target` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
 
-## Try health and metrics
+The application is now runnable using `java -jar target/toolbox-1.0-SNAPSHOT-runner.jar`.
 
-```
-curl -s -X GET http://localhost:8080/health
-{"outcome":"UP",...
-. . .
+## Creating a native executable
 
-# Prometheus Format
-curl -s -X GET http://localhost:8080/metrics
-# TYPE base:gc_g1_young_generation_count gauge
-. . .
+You can create a native executable using: `./mvnw package -Pnative`.
 
-# JSON Format
-curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
-{"base":...
-. . .
-```
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
+
+You can then execute your native executable with: `./target/toolbox-1.0-SNAPSHOT-runner`
+
+If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
