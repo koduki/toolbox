@@ -264,74 +264,50 @@
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <!-- <h1 class="h2">Dashboard</h1> -->
-                        <h1 class="h2">探し物は何ですか？</h1>
+                        <h1 class="h2">{tags[0]}, {tags[1]} を検索</h1>
                         <p>
-                            このサイトは主に開発に便利なライブラリ、ソフトウェア、API、Webサイトを共有して目的に合ったツールを効率的に見つけるためのサイトです。
+                            1~32を表示中(15178の中から)
                         </P>
-                        <p>※ このサイトはまだα版です。いくつかの機能は正常に動かないかもしれません。</p>
                     </div>
 
-
-                    <h2>タグ</h2>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">cloud</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">cms</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">db</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">development</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">operation</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">SRE</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">DEVOPS</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">Security</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- <h2>Section title</h2> -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Tags</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href=".">Lord of SQLInjection</a></td>
+                                    <td>SaaS</td>
+                                    <td>Security, SQL, e-Learning</td>
+                                    <td>ンジョンを攻略しつつSQLインジェクションの脆弱性について学べるサイト. アプリケーションが想定しない文字列を実行することにより、データベースを不正に操作する攻撃はSQLインジェクションと呼ばれ、攻撃によってクレジットカード情報や住所などの重要な個人情報が流出した事例も存在します。「Lord of SQLInjection」は、そんなSQLインジェクションを駆使してダンジョンを攻略していくウェブサイトです</td>
+                                </tr>
+                                <tr>
+                                    <td><a href=".">Name - name new project</a></td>
+                                    <td>SaaS</td>
+                                    <td>development</td>
+                                    <td>入れたキーワードをベースにツールやサービス名の名付けしてくれるツール。ブレインストーミングというか迷ってる時の参考にありかも。Githubとかから既存と被らない名前にしてくれるようだし</td>
+                                </tr>
+                                <tr>
+                                    <td><a href=".">Quarkus</a></td>
+                                    <td>Library</td>
+                                    <td>development,java,web</td>
+                                    <td>スーパーソニック</td>
+                                </tr>
+                                <tr>
+                                    <td><a href=".">Tomcat</a></td>
+                                    <td>Software</a></td>
+                                    <td>development,java,web</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </main>
             </div>
