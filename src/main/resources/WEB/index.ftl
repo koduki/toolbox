@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Hello World</title>
+        <title>Toolbox Share</title>
     </head>
     <body>
         <h1>${msg1} ${msg2}!</1>
