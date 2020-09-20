@@ -35,4 +35,10 @@ public class TagHelper {
         ids.add(tagId);
         return String.join(",", ids);
     }
+
+    public String remove(String tagId) {
+        var ids = new HashSet<String>(tagIds);
+        ids.remove(tagId);
+        return String.join(",", ids);
+    }
 }
