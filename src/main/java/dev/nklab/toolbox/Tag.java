@@ -9,18 +9,19 @@ package dev.nklab.toolbox;
  *
  * @author koduki
  */
-public class Item {
+public class Tag {
 
     public String id;
     public String name;
-    public String type;
-    public String description;
 
-    public Item(String id, String name, String type, String description) {
+    public Tag(String id, String name) {
         this.id = id;
         this.name = name;
-        this.type = type;
-        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" + "id=" + id + ", name=" + name + '}';
     }
 
 }
