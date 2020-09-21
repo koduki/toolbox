@@ -17,7 +17,7 @@ import io.quarkus.qute.TemplateInstance;
 import io.quarkus.qute.api.CheckedTemplate;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;   
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -56,6 +56,8 @@ public class HomeController {
         public static native TemplateInstance show(List<Tag> tags, Item item);
 
         public static native TemplateInstance create(List<Tag> tags);
+
+        public static native TemplateInstance edit(List<Tag> tags, Item item);
     }
 
     @GET
@@ -144,6 +146,17 @@ public class HomeController {
         return Templates.create(tags);
     }
 
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/edit/{id}")
+    public TemplateInstance edit(@PathParam("id") String id) throws InterruptedException, ExecutionException {
+        var tags = getTags();
+        var db = FirestoreClient.getFirestore();
+        var item = db.document("items/" + id).get().get();
+
+        return Templates.edit(tags, HomeController.toItem(item));
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
@@ -157,13 +170,6 @@ public class HomeController {
             @FormParam("details") String details
     ) throws InterruptedException, ExecutionException {
         var taga = getTags();
-
-        System.out.println("name: " + name);
-        System.out.println("url: " + url);
-        System.out.println("type: " + type);
-        System.out.println("tags: " + tags);
-        System.out.println("description: " + description);
-        System.out.println("details: " + details);
 
         var db = FirestoreClient.getFirestore();
 
@@ -183,6 +189,43 @@ public class HomeController {
                 "details", details
         );
         var result = db.collection("items").document().set(item);
+        System.out.println("Update time : " + result.get().getUpdateTime());
+
+        return Templates.create(taga);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/doUpdate")
+    public TemplateInstance doUpdate(
+            @FormParam("id") String id,
+            @FormParam("name") String name,
+            @FormParam("url") String url,
+            @FormParam("type") String type,
+            @FormParam("tags") String tags,
+            @FormParam("description") String description,
+            @FormParam("details") String details
+    ) throws InterruptedException, ExecutionException {
+        var taga = getTags();
+        var db = FirestoreClient.getFirestore();
+
+        var tagList = Stream.of(tags.split(","))
+                .map(s -> s.trim().toLowerCase())
+                .collect(Collectors.toList());
+        for (var tag : tagList) {
+            db.collection("tags").document(tag).set(Map.of("name", tag, "priority", 0)).get();
+        }
+
+        var item = Map.of(
+                "name", name,
+                "url", url,
+                "type", type,
+                "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
+                "description", description,
+                "details", details
+        );
+        var result = db.collection("items").document(id).set(item);
         System.out.println("Update time : " + result.get().getUpdateTime());
 
         return Templates.create(taga);

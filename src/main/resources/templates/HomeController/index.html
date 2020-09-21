@@ -94,62 +94,15 @@
                     <h2>タグ</h2>
                     <div class="container">
                         <div class="row">
+                            {#for tag in tags} 
                             <div class="col-lg-3">
                                 <div class="card" style="height: 150px;">
                                     <div class="card-body">
-                                        <h4 class="card-title"><a href=".">cloud</a></h4>
+                                        <h4 class="card-title"><a href="/list?tags={tagHelper.joing(tag.id)}">{tag.id}</a></h4>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">cms</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">db</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">development</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">operation</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">SRE</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">DEVOPS</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href=".">Security</a></h4>
-                                    </div>
-                                </div>
-                            </div>
+                            {/for}
                         </div>
                     </div>
 
