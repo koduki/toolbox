@@ -107,9 +107,12 @@ public class ToolboxService {
     }
 
     List<String> persistTags(String tags, Firestore db) throws ExecutionException, InterruptedException {
-        var tagList = Stream.of(tags.split(","))
+        var tagList = Stream.of(tags.trim().split(","))
                 .map(s -> s.trim().toLowerCase())
+                .filter(s -> !s.trim().isBlank())
                 .collect(Collectors.toList());
+        System.out.println(tagList);
+        System.out.println(tagList.size());
         for (var tag : tagList) {
             db.collection("tags").document(tag).set(Map.of("name", tag, "priority", 0)).get();
         }
