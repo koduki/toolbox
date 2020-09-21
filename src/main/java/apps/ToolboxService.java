@@ -17,6 +17,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -85,7 +86,8 @@ public class ToolboxService {
                 "type", type,
                 "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
                 "description", description,
-                "details", details
+                "details", details,
+                "updated_at", new Date()
         );
         var result = db.collection("items").document(id).set(item);
         return result;
@@ -100,7 +102,8 @@ public class ToolboxService {
                 "type", type,
                 "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
                 "description", description,
-                "details", details
+                "details", details,
+                "updated_at", new Date()
         );
         var result = db.collection("items").document().set(item);
         return result;
@@ -111,8 +114,7 @@ public class ToolboxService {
                 .map(s -> s.trim().toLowerCase())
                 .filter(s -> !s.trim().isBlank())
                 .collect(Collectors.toList());
-        System.out.println(tagList);
-        System.out.println(tagList.size());
+
         for (var tag : tagList) {
             db.collection("tags").document(tag).set(Map.of("name", tag, "priority", 0)).get();
         }
