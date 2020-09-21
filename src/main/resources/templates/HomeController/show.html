@@ -10,6 +10,10 @@
         <!-- JS, Popper.js, and jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+        <!-- Marked JS -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="/show.js"></script>
     </head>
     <body>
         <a id="skippy" class="sr-only sr-only-focusable" href="#content">
@@ -83,28 +87,44 @@
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <!-- <h1 class="h2">Dashboard</h1> -->
-                        <h1 class="h2">探し物は何ですか？</h1>
-                        <p>
-                            このサイトは主に開発に便利なライブラリ、ソフトウェア、API、Webサイトを共有して目的に合ったツールを効率的に見つけるためのサイトです。
-                        </P>
-                        <p>※ このサイトはまだα版です。いくつかの機能は正常に動かないかもしれません。</p>
-                    </div>
-
-
-                    <h2>タグ</h2>
-                    <div class="container">
-                        <div class="row">
-                            {#for tag in tags} 
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="/list?tags={helper.joing(tag.id)}">{tag.id}</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            {/for}
+                        <h1 class="h2">{item.name}</h1>
+                        <!--                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-star" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                                            <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                                                            </svg>
+                                                            <img width="16px" src="https://dohack.jp/wp-content/uploads/2018/07/e87144-300x290.jpg">-->
+                        <div class="text-right">            
+                            <a class="nav-link" href="/edit/{item.id}">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                </svg>
+                                編集する
+                            </a>
                         </div>
                     </div>
+
+                    <div>
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th>Type</th><td>{item.type}</td>
+                                </tr>    
+                                <tr>
+                                    <th>Tags</th><td>{item.tags}</td>
+                                </tr> 
+                                <tr>
+                                    <th>URL</th><td>{item.url}</td>
+                                </tr>
+                                <tr>
+                                    <th>1行説明</th><td>{item.description}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>詳細</h3>
+                    <p id="details">
+                        {item.details}
+                    </p>
 
                 </main>
                 <!-- close main container -->

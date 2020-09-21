@@ -10,6 +10,12 @@
         <!-- JS, Popper.js, and jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+        <!-- Simple MDE -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+        <script src="/create.js" type="text/javascript"></script>
+
     </head>
     <body>
         <a id="skippy" class="sr-only sr-only-focusable" href="#content">
@@ -82,34 +88,50 @@
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <!-- <h1 class="h2">Dashboard</h1> -->
-                        <h1 class="h2">探し物は何ですか？</h1>
-                        <p>
-                            このサイトは主に開発に便利なライブラリ、ソフトウェア、API、Webサイトを共有して目的に合ったツールを効率的に見つけるためのサイトです。
-                        </P>
-                        <p>※ このサイトはまだα版です。いくつかの機能は正常に動かないかもしれません。</p>
+                        <h1 class="h2">登録情報の編集</h1>
                     </div>
 
-
-                    <h2>タグ</h2>
-                    <div class="container">
-                        <div class="row">
-                            {#for tag in tags} 
-                            <div class="col-lg-3">
-                                <div class="card" style="height: 150px;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="/list?tags={helper.joing(tag.id)}">{tag.id}</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            {/for}
+                    <form action="/doUpdate" method="POST">
+                        <input name="id" type="hidden" value="{item.id}" />
+                        <div class="form-group">
+                            <label>名前</label>
+                            <input name="name" type="text" class="form-control" placeholder="ツール名" value="{item.name}" />
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input name="url" type="url" class="form-control" placeholder="URL" value="{item.url}" />
+                        </div>
+                        <div class="form-group">
+                            <label>Type:</label>
+                            <select name="type" class="form-control">
+                                <option {#if item.type is "ライブラリ" }selected{/if}>ライブラリ</option>
+                                <option {#if item.type is "Midlware" }selected{/if} >Midlware</option>
+                                <option {#if item.type is "Application" }selected{/if}>Application</option>
+                                <option {#if item.type is "SaaS/Webサービス" }selected{/if}>SaaS/Webサービス</option>
+                                <option {#if item.type is "API/PaaS/XaaS" }selected{/if}>API/PaaS/XaaS</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>タグ</label>
+                            <input name="tags" type="text" class="form-control" placeholder="カンマ区切りでタグを入力してください" value="{item.tags}" />
+                        </div>
+                        <div class="form-group">
+                            <label>1行説明</label>
+                            <input name="description" type="text" class="form-control" placeholder="1行説明" value="{item.description}" />
+                        </div>
+                        <div class="form-group">
+                            <label>詳細説明</label>
+                            <textarea name="details" id="details" class="form-control">{item.details}</textarea>
+                        </div>
+                        <div class="text-right form-group">
+                            <button type="submit" class="btn btn-primary">更新</button>
+                        </div>
+                    </form>
 
                 </main>
-                <!-- close main container -->
             </div>
         </div>
-        <!--close container-fluid-->
+
+
     </body>
 </html>

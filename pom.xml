@@ -18,6 +18,14 @@
         <quarkus.platform.version>1.7.3.Final</quarkus.platform.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>nklab-repos</id>
+            <name>NKLab repository</name>
+            <url>https://storage.googleapis.com/artifacts.slide4vr.nklab.dev/snapshot/</url>
+        </repository>
+    </repositories> 
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -37,6 +45,11 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-qute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>6.11.0</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

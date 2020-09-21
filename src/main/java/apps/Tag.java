@@ -3,21 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.nklab.toolbox;
-
-import java.math.BigDecimal;
+package apps;
 
 /**
  *
  * @author koduki
  */
-public class Item {
-    public String name;
-    public BigDecimal price;
+public class Tag {
 
-    public Item(String name, BigDecimal price) {
+    public String id;
+    public String name;
+
+    public Tag(String id, String name) {
+        this.id = id;
         this.name = name;
-        this.price = price;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Tag{" + "id=" + id + ", name=" + name + '}';
+    }
+
 }
