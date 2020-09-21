@@ -20,7 +20,7 @@
 
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
             <!-- <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a> -->
-            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Toolbox</a>
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Toolbox</a>
             <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
             <input class="form-control form-control-dark w-100" type="text" placeholder="検索 (未対応)" aria-label="検索">
             <ul class="navbar-nav px-3">
@@ -70,7 +70,7 @@
                         <ul class="nav flex-column mb-2">
                             {#for tag in tags} 
                             <li class="nav-item">
-                                <a class="nav-link" href="/list?tags={tagHelper.joing(tag.id)}">
+                                <a class="nav-link" href="/list?tags={helper.joing(tag.id)}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                                     {tag.id}
                                 </a>
@@ -81,11 +81,16 @@
                 </nav>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    {#if selectedTags.size == 0 }
                     <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <!-- <h1 class="h2">Dashboard</h1> -->
+                        <h1 class="h2">タグを指定してください</h1>
+                    </div>
+                    {/if}
+                    {#if selectedTags.size > 0 }
+                    <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">
                             {#for tag in selectedTags} 
-                            <a  href="/list?tags={tagHelper.remove(tag)}" role="button" class="btn btn-primary">
+                            <a  href="/list?tags={helper.remove(tag)}" role="button" class="btn btn-primary">
                                 {tag}
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -121,7 +126,7 @@
                             </tbody>
                         </table>
                     </div>
-
+                    {/if}
                 </main>
                 <!-- close main container -->
             </div>

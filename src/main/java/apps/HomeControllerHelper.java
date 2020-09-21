@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.nklab.toolbox;
+package apps;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,15 +12,22 @@ import java.util.Set;
  *
  * @author koduki
  */
-public class TagHelper {
+public class HomeControllerHelper {
 
     private Set<String> tagIds;
 
-    public TagHelper(String tagsParam) {
+    public HomeControllerHelper() {
+        var set = new HashSet<String>();
+        this.tagIds = set;
+    }
+
+    public HomeControllerHelper(String tagsParam) {
         var set = new HashSet<String>();
         if (tagsParam != null) {
             for (String tag : tagsParam.split(",")) {
-                set.add(tag);
+                if (!tag.trim().isBlank()) {
+                    set.add(tag);
+                }
             }
         }
         this.tagIds = set;
