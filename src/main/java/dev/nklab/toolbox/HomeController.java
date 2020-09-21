@@ -3,6 +3,7 @@ package dev.nklab.toolbox;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
@@ -15,9 +16,8 @@ import javax.ws.rs.core.MediaType;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.qute.api.CheckedTemplate;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map;   
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -51,7 +51,7 @@ public class HomeController {
 
         public static native TemplateInstance index(List<Tag> tags, TagHelper tagHelper);
 
-        public static native TemplateInstance list(List<Tag> tags, List<Tag> selectedTags, List<Item> items, TagHelper tagHelper);
+        public static native TemplateInstance list(List<Tag> tags, Set<String> selectedTags, List<Item> items, TagHelper tagHelper);
 
         public static native TemplateInstance show(List<Tag> tags, Item item);
 
@@ -74,14 +74,26 @@ public class HomeController {
         var db = FirestoreClient.getFirestore();
         var tags = getTags();
         var tagHelper = new TagHelper(tagsParam);
-        var query = findByContainKey(db.collection("Item"), "tag2", tagHelper.getCurrentTagIds());
+        var query = findByContainKey(db.collection("items"), "tags", tagHelper.getCurrentTagIds());
         var items = query.get().getDocuments().stream()
-                .map(item -> new Item(item.getId(), item.getString("Name"), "SaaS", "no detail"))
+                .map(HomeController::toItem)
                 .collect(Collectors.toList());
 
-        var selectedTags = getTags(tagHelper.getCurrentTagIds());
+        var selectedTags = tagHelper.getCurrentTagIds();
 
         return Templates.list(tags, selectedTags, items, new TagHelper(tagsParam));
+    }
+
+    static Item toItem(DocumentSnapshot item) {
+        return new Item(
+                item.getId(),
+                item.getString("name"),
+                item.getString("type"),
+                String.join(",", ((Map<String, Boolean>) item.get("tags")).keySet()),
+                item.getString("description"),
+                item.getString("url"),
+                item.getString("details")
+        );
     }
 
     ApiFuture<QuerySnapshot> findByContainKey(CollectionReference col, String property, Set<String> keys) {
@@ -107,7 +119,7 @@ public class HomeController {
     List<Tag> getTags() throws InterruptedException, ExecutionException {
         var db = FirestoreClient.getFirestore();
 
-        var query = db.collection("Tag").get();
+        var query = db.collection("tags").get();
         var tags = query.get().getDocuments().stream().map(r -> new Tag(r.getId(), r.getString("name"))).collect(Collectors.toList());
         return tags;
     }
@@ -118,9 +130,9 @@ public class HomeController {
     public TemplateInstance show(@PathParam("id") String id) throws InterruptedException, ExecutionException {
         var tags = getTags();
         var db = FirestoreClient.getFirestore();
-        var item = db.document("Item/" + id).get().get();
+        var item = db.document("items/" + id).get().get();
 
-        return Templates.show(tags, new Item(item.getId(), item.getString("Name"), "SaaS", "no detail"));
+        return Templates.show(tags, HomeController.toItem(item));
     }
 
     @GET
@@ -147,29 +159,30 @@ public class HomeController {
         var taga = getTags();
 
         System.out.println("name: " + name);
-        System.out.println("urle: " + url);
-        System.out.println("typee: " + type);
-        System.out.println("tagse: " + tags);
-        System.out.println("descriptione: " + description);
-        System.out.println("detailse: " + details);
+        System.out.println("url: " + url);
+        System.out.println("type: " + type);
+        System.out.println("tags: " + tags);
+        System.out.println("description: " + description);
+        System.out.println("details: " + details);
 
         var db = FirestoreClient.getFirestore();
 
-        var tagData = Stream.of(tags.split(",")).map(s -> s.trim().toLowerCase())
-                .collect(Collectors.toMap(x -> x, x -> true));
-        db.collection("tags").document().set(tagData).get();
+        var tagList = Stream.of(tags.split(","))
+                .map(s -> s.trim().toLowerCase())
+                .collect(Collectors.toList());
+        for (var tag : tagList) {
+            db.collection("tags").document(tag).set(Map.of("name", tag, "priority", 0)).get();
+        }
 
         var item = Map.of(
                 "name", name,
                 "url", url,
                 "type", type,
-                "tags", tagData,
+                "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
                 "description", description,
                 "details", details
         );
-
         var result = db.collection("items").document().set(item);
-
         System.out.println("Update time : " + result.get().getUpdateTime());
 
         return Templates.create(taga);
