@@ -5,6 +5,8 @@
  */
 package apps;
 
+import java.util.Date;
+
 /**
  *
  * @author koduki
@@ -16,9 +18,10 @@ public class Item {
     public String type;
     public String tags;
     public String description;
-    public String url;
 
+    public String url;
     public String details;
+    public Date updatedAt;
 
     public Item(String id, String name, String type, String tags, String description, String url, String details) {
         this.id = id;
@@ -31,4 +34,15 @@ public class Item {
         this.details = details;
     }
 
+    public Item(String id, String name, String type, String tags, String description, String url, String details, Date updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.tags = tags;
+        this.description = description;
+
+        this.url = url;
+        this.details = details;
+        this.updatedAt = this.updatedAt;
+    }
 }

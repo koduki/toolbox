@@ -9,6 +9,7 @@ import io.quarkus.qute.api.CheckedTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +30,7 @@ public class HomeController {
     @CheckedTemplate
     public static class Templates {
 
-        public static native TemplateInstance index(HomeControllerHelper helper, List<Tag> tags);
+        public static native TemplateInstance index(HomeControllerHelper helper, List<Tag> tags, List<Item> newItems);
 
         public static native TemplateInstance list(HomeControllerHelper helper, List<Tag> tags, Set<String> selectedTags, List<Item> items);
 
@@ -44,7 +45,7 @@ public class HomeController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/")
     public TemplateInstance get(@QueryParam("tags") String tagsParam) throws InterruptedException, ExecutionException {
-        return Templates.index(new HomeControllerHelper(tagsParam), toolboxService.getTags());
+        return Templates.index(new HomeControllerHelper(tagsParam), toolboxService.getTags(), toolboxService.findNewItems(6));
     }
 
     @GET
@@ -91,7 +92,8 @@ public class HomeController {
             @FormParam("description") String description,
             @FormParam("details") String details
     ) throws InterruptedException, ExecutionException, URISyntaxException {
-        var result = toolboxService.createItem(tags, name, url, type, description, details);
+        var result = toolboxService.createItem(
+                new Item(null, name, type, tags, description, url, details));
         System.out.println("Update time : " + result.get().getUpdateTime());
 
         return Response
@@ -111,7 +113,7 @@ public class HomeController {
             @FormParam("description") String description,
             @FormParam("details") String details
     ) throws InterruptedException, ExecutionException, URISyntaxException {
-        var result = toolboxService.updateItem(tags, name, url, type, description, details, id);
+        var result = toolboxService.updateItem(new Item(id, name, type, tags, description, url, details));
         System.out.println("Update time : " + result.get().getUpdateTime());
 
         return Response

@@ -3,13 +3,19 @@
     <head>
         <meta charset="UTF-8" />
         <title>Toolbox - みんなの道具箱</title>
+        <meta name="description" content="このサイトは開発に便利なライブラリ、ソフトウェア、API、そしてWebサイトを共有して目的に合ったツールを探すためのサイトです。未来の自分、そしてまだ見ぬ誰かの「あのツールなんだっけ？」を解決しましょう"> 
+
         <!-- CSS only -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="/main.css">
 
         <!-- JS, Popper.js, and jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+        <!-- Toolbox JS -->
+        <script src="/main.js"></script>
     </head>
     <body>
         <a id="skippy" class="sr-only sr-only-focusable" href="#content">
@@ -36,7 +42,7 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">
+                                <a class="nav-link" href="/list">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                                     <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -70,8 +76,12 @@
                         <ul class="nav flex-column mb-2">
                             {#for tag in tags} 
                             <li class="nav-item">
-                                <a class="nav-link" href="/list?tags={helper.joing(tag.id)}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <a class="nav-link tag-plus" href="/list?tags={helper.joing(tag.id)}" data-toggle="tooltip" title="タグを結合します">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </a>
+                                <a class="nav-link tag-body" href="/list?tags={tag.id}" >
                                     {tag.id}
                                 </a>
                             </li>
@@ -81,15 +91,40 @@
                 </nav>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-                    <div class="  align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <!-- <h1 class="h2">Dashboard</h1> -->
-                        <h1 class="h2">探し物は何ですか？</h1>
-                        <p>
-                            このサイトは主に開発に便利なライブラリ、ソフトウェア、API、Webサイトを共有して目的に合ったツールを効率的に見つけるためのサイトです。
-                        </P>
-                        <p>※ このサイトはまだα版です。いくつかの機能は正常に動かないかもしれません。</p>
+                    <div class="row align-items-center">
+                        <div  class="col-12 col-md-5 col-lg-5 order-md-2">
+                            <img  src="/kougu_bako.png" alt="..." data-aos="fade-up" data-aos-delay="100" class="img-fluid mw-md-150 mw-lg-130 mb-6 mb-md-0 aos-init aos-animate">
+                        </div>
+                        <div data-aos="fade-up" class="col-12 col-md-8 col-lg-7 order-md-1 aos-init aos-animate">
+                            <h1 class="display-4 text-center text-md-left">
+                                あのツールってなんだっけ？
+                            </h1>
+                            <div class="lead text-center text-md-left text-muted mb-6 mb-lg-8">
+                                <p>「以前見た記憶があるけどあのライブラリなんだっけ？」「こんなことしたいけど使えそうなツールやサービスはないかな？」そう思うことはありませんか？ 私はよくあります。</p>
+                                <p>このサービスは「ちょっと便利そうだな」「いつか使えそうだな」と思ったツールを登録しておいてみんなでシェアするサービスです。<br />未来の自分、そしてまだ見ぬ誰かの「あのツールなんだっけ？」を解決しましょう。</p>
+                                <p>※ このサイトはまだα版です。いくつかの機能は正常に動かないかもしれません。</p>
+                            </div>
+                        </div>
                     </div>
 
+                    <h2>新着</h2>
+                    <div class="container">
+                        <div class="row">
+                            {#for item in newItems} 
+                            <div class="col-lg-6" style="margin-bottom: 20px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="/show/{item.id}">{item.name}</a></h5>
+                                        <p class="card-text">{item.description}</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{item.type}, {item.tags}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {/for}
+                        </div>
+                    </div>
 
                     <h2>タグ</h2>
                     <div class="container">

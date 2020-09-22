@@ -63,6 +63,18 @@ public class ToolboxService {
         }
     }
 
+    public List<Item> findNewItems(int count) throws ExecutionException, InterruptedException {
+        var db = FirestoreClient.getFirestore();
+        var query = db.collection("items")
+                .orderBy("updated_at", Query.Direction.DESCENDING)
+                .limit(count)
+                .get();
+        return query.get().getDocuments().stream()
+                .map(x -> toItem(x))
+                .collect(Collectors.toList());
+
+    }
+
     public Item getItem(String id) throws InterruptedException, ExecutionException {
         var db = FirestoreClient.getFirestore();
         var item = db.document("items/" + id).get().get();
@@ -77,36 +89,35 @@ public class ToolboxService {
         return tags;
     }
 
-    public ApiFuture<WriteResult> updateItem(String tags, String name, String url, String type, String description, String details, String id) throws InterruptedException, ExecutionException {
+    public ApiFuture<WriteResult> updateItem(Item item) throws InterruptedException, ExecutionException {
         var db = FirestoreClient.getFirestore();
-        var tagList = persistTags(tags, db);
-        var item = Map.of(
-                "name", name,
-                "url", url,
-                "type", type,
+        var tagList = persistTags(item.tags, db);
+        var doc = Map.of(
+                "name", item.name,
+                "url", item.url,
+                "type", item.type,
                 "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
-                "description", description,
-                "details", details,
-                "updated_at", new Date()
+                "description", item.description,
+                "details", item.details,
+                "updated_at", (item.updatedAt == null) ? new Date() : item.updatedAt
         );
-        var result = db.collection("items").document(id).set(item);
-        return result;
+        return db.collection("items").document(item.id).set(doc);
     }
 
-    public ApiFuture<WriteResult> createItem(String tags, String name, String url, String type, String description, String details) throws InterruptedException, ExecutionException {
+    public ApiFuture<WriteResult> createItem(Item item) throws InterruptedException, ExecutionException {
         var db = FirestoreClient.getFirestore();
-        var tagList = persistTags(tags, db);
-        var item = Map.of(
-                "name", name,
-                "url", url,
-                "type", type,
+
+        var tagList = persistTags(item.tags, db);
+        var doc = Map.of(
+                "name", item.name,
+                "url", item.url,
+                "type", item.type,
                 "tags", tagList.stream().collect(Collectors.toMap(x -> x, x -> true)),
-                "description", description,
-                "details", details,
-                "updated_at", new Date()
+                "description", item.description,
+                "details", item.details,
+                "updated_at", (item.updatedAt == null) ? new Date() : item.updatedAt
         );
-        var result = db.collection("items").document().set(item);
-        return result;
+        return db.collection("items").document().set(doc);
     }
 
     List<String> persistTags(String tags, Firestore db) throws ExecutionException, InterruptedException {

@@ -57,6 +57,17 @@ body {
     color: inherit;
 }
 
+.sidebar .nav-link.tag-plus {
+    float: left;
+    padding-right: 3px;
+}
+
+.sidebar .nav-link.tag-body {
+    float: left;
+    margin-left: 0rem;
+    padding-left: 0rem;
+}
+
 .sidebar-heading {
     font-size: .75rem;
     text-transform: uppercase;
